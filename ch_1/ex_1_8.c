@@ -7,14 +7,14 @@
 int main() {
     int blanks = 0, tabs = 0, newlines = 0;
 
-    int c;
+    int current_char;
     printf("Enter a string: ");
-    while ((c = getchar()) != EOF) {
-        if (c == ' ') {
+    while ((current_char = getchar()) != EOF) {
+        if (current_char == ' ') {
             blanks++;
-        } else if (c == '\t') {
+        } else if (current_char == '\t') {
             tabs ++;
-        } else if (c == '\n') {
+        } else if (current_char == '\n') {
             newlines++;
         }
     }
