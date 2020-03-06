@@ -9,12 +9,12 @@
  * 
  * Note: the tricky thing here is that tabs represent a different number of
  * spaces depending on your current position within a tab column. If you're 4
- * characters in to an 8-space tab column, the tab will render 8 spaces wide.
- * If you're 7 characters in, the tab will be only 1 space wide.
+ * characters in to an 8-space tab column and you press tab, the tab will render
+ * 4 spaces wide. If you're 7 characters in, the tab will be only 1 space wide.
  * 
  * The solution is to use two types of length counter: 'length' tracks the
- * actual number of ASCII characters in the string. '\t' and ' ' both count
- * as 1. 'position' tracks the actual number of keypresses, ignoring conversions
+ * number of ASCII characters in the string. '\t' and ' ' both count
+ * as 1. 'position' counts the actual keypresses, ignoring conversions
  * between blanks and tabs. This represents how the line will be rendered and
  * tells you how close you are to the next tab stop.
  */
@@ -31,7 +31,7 @@ int main() {
     char line[MAX_LINE];
     int length = 0;     // Tracks array length in actual chars
     int position = 1;   /* Tracks line 'position' into which current_char is
-                           being inserted. Counts *every* char entered, even if
+                           being inserted. Counts every keypress, even if
                            multiple blanks are converted to a single tab. */  
     int blanks = 0;
     int tabs = 0;
@@ -40,7 +40,7 @@ int main() {
         if (current_char == ' ') {
             if (position % TAB_SPACES == 0) {
                 /* If the position of the line means the current blank has
-                   reached a tab stop, reset the blank count and increment tabs. */
+                   reached a tab stop, replace all pending blanks with a tab. */
                 tabs++;
                 blanks = 0;
             } else {
