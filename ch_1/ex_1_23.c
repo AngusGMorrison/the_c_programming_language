@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
     }
 
     int arg_len = strlen(argv[1]);
-    if (argv[1][arg_len-2] != '.' || argv[1][arg_len-1] != 'c') {
+    if (arg_len < 3 || argv[1][arg_len-2] != '.' || argv[1][arg_len-1] != 'c') {
         printf("%s", ARG_ERROR);
         return ARG_ERROR_CODE;
     }
