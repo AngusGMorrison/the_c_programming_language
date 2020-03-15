@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <string.h>
 
 /**
  * Write a function expand(s1, s2) that expands shorthand notations like a]-z in
