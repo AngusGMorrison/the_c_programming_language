@@ -45,6 +45,7 @@ int main() {
             case '%':
                 op2 = pop();
                 push((double) ((int) pop() % (int) op2));
+                break;
             case '\n':
                 printf("\t%.8g\n", pop());
                 break;
