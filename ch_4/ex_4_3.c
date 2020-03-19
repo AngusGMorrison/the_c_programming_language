@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/**
+ * Given the basic framework, it's straightforward to extend the calculator.
+ * Add the modulus (%) operator and provisions for negative numbers.
+ */ 
+
 #define MAXOP 100   // Max size of operand or operator
 #define NUMBER '0'  // Signal that a number was found
 
