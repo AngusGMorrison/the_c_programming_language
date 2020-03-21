@@ -210,7 +210,9 @@ int getop(char s[]) {
     }
     s[i] = '\0';
 
-    buf = c;
-
+    if (c != EOF) {
+        buf = c;
+    }
+    
     return NUMBER;
 }
