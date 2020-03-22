@@ -52,11 +52,11 @@ int buffer[BUFSIZE];
 int buf_pos = 0;
 
 int getch() {
-    return buffer[buf_pos] != 0 ? buffer[buf_pos] : getchar();
+    return buf_pos > 0 ? buffer[--buf_pos] : getchar();
 }
 
 void ungetch(int c) {
-    if (buf_pos < BUFSIZE - 1) {
+    if (buf_pos < BUFSIZE) {
         buffer[buf_pos++] = c;
     } else {
         printf("Buffer full\n");
