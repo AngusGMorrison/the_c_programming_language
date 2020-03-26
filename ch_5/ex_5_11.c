@@ -2,6 +2,9 @@
  * Modify the programs entab and detab (written as exercises in Chapter 1) to
  * accept a list of tab stops as arguments. Use the default tab settings if
  * there are no arguments.
+ * 
+ * Note: entab is omitted due to the difficulty of modern terminals having an
+ * internal default tab size, leading to incorrect output from correct code.
  */
 
 #include <stdio.h>
