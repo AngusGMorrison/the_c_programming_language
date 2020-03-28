@@ -30,8 +30,10 @@ int main(int argc, char *argv[]) {
             switch (flag) {
                 case 'n':
                     numeric = 1;
+                    break;
                 case 'f':
                     ignore_case = 1;
+                    break;
                 case 'r':
                     reverse = 1;
                     break;
