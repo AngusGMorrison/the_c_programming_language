@@ -118,8 +118,6 @@ void swap(void *v[], int first, int second) {
     v[second] = temp;
 }
 
-#include <stdlib.h>
-
 int numcmp(const char *s1, const char *s2) {
     double v1 = atof(s1);
     double v2 = atof(s2);
