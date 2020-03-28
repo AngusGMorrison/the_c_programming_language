@@ -3,16 +3,20 @@
  * distinctions are not made during sorting; for example, a and A compare equal.
  */
 
+#include <ctype.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
 #define MAXLINES 5000
 char *lineptr[MAXLINES];
+static int numeric = 0;
+static int reverse = 0;
+static int ignore_case = 0;
 
 int readlines(char *lineptr[], int max_lines);
 int get_line(char *line, int max_len); 
-void writelines(char *lineptr[], int nlines, int reverse);
+void writelines(char *lineptr[], int nlines);
 void q_sort(void *lineptr[], int left, int right, int (*comp)(void *, void*));
 int numcmp(const char *, const char *);
 
@@ -20,9 +24,6 @@ int main(int argc, char *argv[]) {
     char *flagstr;
     char flag;
     int nlines;
-    int numeric = 0;
-    int reverse = 0;
-    int ignore_case = 0;
 
     while (argc-- > 1 && (*++argv)[0] == '-') {
         while ((flag = *++argv[0])) {
@@ -42,7 +43,7 @@ int main(int argc, char *argv[]) {
 
     if ((nlines = readlines(lineptr, MAXLINES)) >= 0) {
         q_sort((void **) lineptr, 0, nlines - 1, (int (*)(void *, void *)) (numeric ? numcmp : strcmp));
-        writelines(lineptr, nlines, reverse);
+        writelines(lineptr, nlines);
         return 0;
     } else {
         printf("Input too big to sort\n");
@@ -90,6 +91,7 @@ int get_line(char *line, int max_len) {
 void q_sort(void *v[], int left, int right, int (*comp)(void *, void *)) {
     int i, last;
     void swap(void *v[], int first, int second);
+    void *setcase(void *s);
 
     if (left >= right)
         return;
@@ -97,9 +99,8 @@ void q_sort(void *v[], int left, int right, int (*comp)(void *, void *)) {
     swap(v, left, (left + right) / 2);
     last = left;
     for (i = left + 1; i <= right; i++) {
-        if ((*comp)(v[i], v[left]) < 0) {
+        if ((*comp)(setcase(v[i]), setcase(v[left])) < 0)
             swap(v, ++last, i);
-        } 
     }
     swap(v, left, last);
     
@@ -113,7 +114,16 @@ void swap(void *v[], int first, int second) {
     v[second] = temp;
 }
 
-#include <stdlib.h>
+void *setcase(void *s) {
+    if (!ignore_case) return s;
+
+    int len = strlen(s);
+    void *cased = malloc(len);
+    if (cased == NULL)
+        printf("Null pointer in setcase. Returning string unchanged.\n");
+    strcpy(cased, s);
+    return cased;
+}
 
 int numcmp(const char *s1, const char *s2) {
     double v1 = atof(s1);
@@ -127,7 +137,7 @@ int numcmp(const char *s1, const char *s2) {
         return 0;
 }
 
-void writelines(char *lineptr[], int nlines, int reverse) {
+void writelines(char *lineptr[], int nlines) {
     if (reverse) {
         for (int i = nlines - 1; i >= 0; i--)
             printf("%s\n", lineptr[i]);
