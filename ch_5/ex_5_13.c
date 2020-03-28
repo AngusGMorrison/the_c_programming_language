@@ -59,8 +59,6 @@ int read_lines (char *lines[], int max_lines) {
     return nlines;
 }
 
-
-
 int get_line(char *line, int lim) {
     int i, c;
 
