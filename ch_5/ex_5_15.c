@@ -1,6 +1,6 @@
 /**
- * Modify the sort program to handle an -r flag, which indicates sorting
- * in reverse (decreasing) order. Be sure that -r works with -n.
+ * Add the option -f to fold upper and lower case together, so that case
+ * distinctions are not made during sorting; for example, a and A compare equal.
  */
 
 #include <stdio.h>
@@ -9,12 +9,10 @@
 
 #define MAXLINES 5000
 char *lineptr[MAXLINES];
-static int numeric = 0;
-static int reverse = 0;
 
 int readlines(char *lineptr[], int max_lines);
 int get_line(char *line, int max_len); 
-void writelines(char *lineptr[], int nlines);
+void writelines(char *lineptr[], int nlines, int reverse);
 void q_sort(void *lineptr[], int left, int right, int (*comp)(void *, void*));
 int numcmp(const char *, const char *);
 
@@ -22,12 +20,17 @@ int main(int argc, char *argv[]) {
     char *flagstr;
     char flag;
     int nlines;
+    int numeric = 0;
+    int reverse = 0;
+    int ignore_case = 0;
 
     while (argc-- > 1 && (*++argv)[0] == '-') {
         while ((flag = *++argv[0])) {
             switch (flag) {
                 case 'n':
                     numeric = 1;
+                case 'f':
+                    ignore_case = 1;
                 case 'r':
                     reverse = 1;
                     break;
@@ -39,7 +42,7 @@ int main(int argc, char *argv[]) {
 
     if ((nlines = readlines(lineptr, MAXLINES)) >= 0) {
         q_sort((void **) lineptr, 0, nlines - 1, (int (*)(void *, void *)) (numeric ? numcmp : strcmp));
-        writelines(lineptr, nlines);
+        writelines(lineptr, nlines, reverse);
         return 0;
     } else {
         printf("Input too big to sort\n");
@@ -91,23 +94,15 @@ void q_sort(void *v[], int left, int right, int (*comp)(void *, void *)) {
     if (left >= right)
         return;
     
-    // Swap the value on the left-hand side with the value in the middle
     swap(v, left, (left + right) / 2);
-    // Last = the value on the left-hand side (the value that was in previously in the middle)
     last = left;
-    // i is the value after last. Up to and including the right-hand side, do...
     for (i = left + 1; i <= right; i++) {
-        // If the value at i is less than the first value in the array...
         if ((*comp)(v[i], v[left]) < 0) {
-            // Swap the value following the last value to be swapped with i
-            // If i == 1, it will stay in the same place
             swap(v, ++last, i);
         } 
     }
-    // Swap the value on the left with the last value to be swapped.
-    // This makes everything on the left of left smaller than left
     swap(v, left, last);
-    // Split the array in half and quicksort again
+    
     q_sort(v, left, last - 1, comp);
     q_sort(v, last + 1, right, comp);
 }
@@ -132,7 +127,7 @@ int numcmp(const char *s1, const char *s2) {
         return 0;
 }
 
-void writelines(char *lineptr[], int nlines) {
+void writelines(char *lineptr[], int nlines, int reverse) {
     if (reverse) {
         for (int i = nlines - 1; i >= 0; i--)
             printf("%s\n", lineptr[i]);
