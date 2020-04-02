@@ -81,38 +81,29 @@ int getword(char *word, int lim) {
     while (isspace(c = getch()))
         ;
 
-    if (c != EOF)
-        *w++ = c;
-
     if (!isalpha(c) && c != '#' && c != '"' && c != '/') {
+        *w++ = c;
         *w = '\0';
         return c;
     }
 
     if (c == '#' || c == '"' || c == '/') {
-        if (c == '#' && !isalpha(next = getch())) {
+        if ((c == '#' && !isalpha(next = getch())) ||
+            (c == '"' && !isalnum(next)) ||
+            (c == '/' && next != '*')) {
+            // If not preprocessor, string literal or possible comment
             ungetch(next);
+            *w++ = c;
             *w = '\0';
             return c;
-        } else if (c == '"' && !isalnum(next = getch())) {
-            ungetch(next);
-            *w = '\0';
-            return c;
-        } else if (c == '/') {
-            if ((next = getch()) == '*') {
-                while (isblank(next = getch()))
-                    ;
-                *--w = next;
-                w++;
-            } else {
-                ungetch(next);
-                *w = '\0';
-                return c;
-            } 
-        } else {
-            *--w = next;
-            w++;
+        } else if (c == '/' && next == '*') {
+            // Comment found; skip whitespace before first word
+            while (isblank(next = getch()))
+                ;
         }
+        *w++ = next;
+    } else {
+        *w++ = c;
     }
 
     for ( ; --lim > 0; w++) {
