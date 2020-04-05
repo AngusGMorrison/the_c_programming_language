@@ -22,7 +22,7 @@ extern const int MAX_VAR_LEN;
 int main(int argc, char *argv[]) {
     // Read command line args and open file for reading
     if (argc != 3) {
-        printf("Usage: ./ex_6_2 <file_path> <match_length>\n");
+        printf("Usage: ./main <file_path> <match_length>\n");
         return 1;
     }
 
