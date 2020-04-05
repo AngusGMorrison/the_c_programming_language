@@ -23,13 +23,16 @@ const char *types[] = {
 const int MAX_VAR_LEN = 31;
 FILE *program;
 
+// Extract variable and function names from a file
 int get_variable(char *variable) {
     int declaration = 0;     // Flag a variable declaration for capture
     char word[MAX_VAR_LEN];
 
     while (get_word(word, MAX_VAR_LEN) != EOF) {
         if (declaration) {
-            // Account for pointers and two-word types like long double
+            /* The preceding word was a variable declaration; check that the
+               declaration is not two words (e.g. long double), then capture the
+               word. */
             if (word[0] != '*' && binsearch(word, types, NTYPES) < 0) {
                 strcpy(variable, word);
                 declaration = 0;
@@ -43,6 +46,7 @@ int get_variable(char *variable) {
     return EOF;
 }
 
+// Extract whole words from a file, excluding comments and string literals
 static int get_word(char *word, int limit) {
     int getch();
     void ungetch(int c);
@@ -105,7 +109,7 @@ static void ungetch(int c) {
     }
 }
 
-/* Binary search for valid data type matching key */
+// Binary search for valid data type matching key
 static int binsearch(char *key, const char *table[], int nkeys) {
     int comparison, low, mid, high;
 
