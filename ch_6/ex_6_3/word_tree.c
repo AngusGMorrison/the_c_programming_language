@@ -37,7 +37,6 @@ static node *node_alloc() {
 
     new->word = NULL;
     new->line_count = 0;
-    // new->line_nums = malloc(sizeof(int) * MAX_LINE_NUMS);
     new->left = new->right = NULL;
     return new;
 }
