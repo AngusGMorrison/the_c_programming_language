@@ -11,7 +11,7 @@
 extern FILE *in, *out;
 
 int main(int argc, char *argv[]) {
-    if (argc != 2) {
+    if (argc != 3) {
         argc_error();
     }
 
@@ -19,12 +19,11 @@ int main(int argc, char *argv[]) {
         fopen_error(argv[1]);
     }
 
-    char *out_path = "./out.c";
-    if ((out = fopen(out_path, "w")) == NULL) {
+    if ((out = fopen(argv[2], "w")) == NULL) {
         fclose(in);
-        fopen_error(out_path);
+        fopen_error(argv[2]);
     }
 
-    process_file(in, out);
+    process_file();
     return 0;
 }

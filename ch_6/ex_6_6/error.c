@@ -9,7 +9,7 @@
 enum { ARGC = 1, FOPEN, OVERFLOW, NULL_PTR };
 
 void argc_error() {
-    printf("Usage: ./main <file path>\n");
+    printf("Usage: ./main <input file path> <output file path>\n");
     exit(ARGC);
 }
 

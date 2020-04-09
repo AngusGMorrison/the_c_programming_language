@@ -1,9 +1,13 @@
 /**
  * Process tokens from a C file.
+ * 
+ * This implementation could be extended to account for comments and string
+ * literals.
  */
 
 #include <ctype.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "error.h"
 #include "hash_table.h"
@@ -31,10 +35,11 @@ void process_file() {
                 fprintf(out, "%s", token);
                 get_next_token(token);
                 key = str_dup(token);
+                fprintf(out, "%s", key);
                 get_next_token(token);
                 value = str_dup(token);
                 install(definitions, key, value);
-                fprintf(out, "%s %s", key, value);
+                fprintf(out, "%s", value);
             } else {
                 fprintf(out, "%s", token);
             }
@@ -56,10 +61,10 @@ int get_next_token(char *token) {
     char *ptoken = token;
     char current;
 
-    while ((current = getchar() != EOF) && !isalnum(current) && current != '#') {
+    while ((current = get_char()) != EOF && !isalnum(current) && current != '#') {
         fprintf(out, "%c", current);
     }
-
+    
     if (current == EOF) {
         return EOF;
     }
@@ -76,7 +81,7 @@ int get_next_token(char *token) {
         while (isalnum(current = get_char()) || current == '_') {
             *ptoken++ = current;
         }
-        ungetch_char(current);
+        unget_char(current);
         *ptoken = '\0';
         return token_type = WORD;
     }
@@ -90,7 +95,7 @@ static char buffer[MAX_BUF];
 static int buf_pos = 0;
 
 static char get_char() {
-    return buf_pos > 0 ? buffer[buf_pos--] : fgetc(in);
+    return buf_pos > 0 ? buffer[--buf_pos] : fgetc(in);
 }
 
 static void unget_char(char c) {

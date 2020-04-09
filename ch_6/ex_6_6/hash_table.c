@@ -3,6 +3,7 @@
  */ 
 
 #include <stdlib.h>
+#include <string.h>
 #include "error.h"
 #include "hash_table.h"
 
@@ -10,20 +11,18 @@ extern const int HASH_SIZE;
 
 node *lookup(node *table[], char *key) {
     node *match;
-
     for (match = table[hash(key)]; match != NULL; match = match->next) {
-        if (strcmp(match->key, key)) {
+        if (strcmp(match->key, key) == 0) {
             return match;
         }
     }
-
     return NULL;
 }
 
 node *install(node *table[], char *key, char *value) {
     node *match;
-
-    if ((match = lookup(table, key)) != NULL) {
+    if ((match = lookup(table, key)) == NULL) {
+        
         match = alloc_node();
         match->key = key;
         unsigned hashval = hash(key);
