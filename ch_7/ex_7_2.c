@@ -32,7 +32,6 @@ int main() {
             putchar(current);
         }
     }
-
     return 0;
 }
 
