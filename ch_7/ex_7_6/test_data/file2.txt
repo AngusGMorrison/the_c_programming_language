@@ -1,0 +1,4 @@
+Hello there
+This is file 2
+Isn't it great?
+Here's another differing line
