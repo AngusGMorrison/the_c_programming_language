@@ -27,6 +27,7 @@ int main(int argc, char *argv[]) {
     }
     
     if ((f2 = fopen(argv[2], "r")) == NULL) {
+        fclose(f1);
         fprintf(stderr, "Error: failed to open file %s\n", argv[2]);
         exit(2);
     }
@@ -44,6 +45,8 @@ int main(int argc, char *argv[]) {
         printf("File 2: %s\n", len2 > len1 ? line2 : "");
     }
 
+    fclose(f1);
+    fclose(f2);
     exit(0);
 }
 
