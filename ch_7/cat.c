@@ -3,8 +3,11 @@
  */ 
 
 #include <stdio.h>
+#include <stdlib.h>
 
-main(int argc, char *argv[]) {
+void filecopy(FILE *ifp, FILE *ofp);
+
+int main(int argc, char *argv[]) {
     FILE *fp;
     void filecopy(FILE *in, FILE *out);
     char *prog = argv[0];   // Program name for errors
@@ -30,4 +33,13 @@ main(int argc, char *argv[]) {
     }
 
     exit(0);
+}
+
+// Copy file ifp to file ofp
+void filecopy(FILE *ifp, FILE *ofp) {
+    int c;
+
+    while ((c = getc(ifp)) != EOF) {
+        putc(c, ofp);
+    }
 }
