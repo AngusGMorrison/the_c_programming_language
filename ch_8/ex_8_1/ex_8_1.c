@@ -1,6 +1,6 @@
 /**
  * Rewrite the program cat from Chapter 7 using read, write, open and close
- * instead of their standard library equivalents. Perform experiements to
+ * instead of their standard library equivalents. Perform experiments to
  * determine the relevant speeds of the two versions.
  */
 
